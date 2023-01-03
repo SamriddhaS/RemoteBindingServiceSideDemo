@@ -1,6 +1,7 @@
 package com.example.remotebindingservicesidedemo
 
 import android.content.Intent
+import android.os.Build
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.widget.Toast
@@ -17,8 +18,13 @@ class MainActivity : AppCompatActivity() {
         setContentView(binding.root)
 
         serviceIntent = Intent(applicationContext,MyService::class.java)
+
         binding.btnStart.setOnClickListener {
-            startService(serviceIntent);
+            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
+                startForegroundService(serviceIntent)
+            }else{
+                startService(serviceIntent)
+            }
             Toast.makeText(this,"Service Started",Toast.LENGTH_SHORT).show();
         }
 
