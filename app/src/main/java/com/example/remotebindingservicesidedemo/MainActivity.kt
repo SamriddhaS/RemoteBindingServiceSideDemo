@@ -44,7 +44,7 @@ class MainActivity : AppCompatActivity() {
     private fun startJob(){
         val componentName = ComponentName(this,MyJobService::class.java)
         val jobInfo = JobInfo.Builder(102,componentName)
-            .setRequiredNetworkType(JobInfo.NETWORK_TYPE_CELLULAR)
+            .setRequiredNetworkType(JobInfo.NETWORK_TYPE_ANY)
             .setPeriodic(15*60*1000)
             .setRequiresCharging(false)
             .setPersisted(true)

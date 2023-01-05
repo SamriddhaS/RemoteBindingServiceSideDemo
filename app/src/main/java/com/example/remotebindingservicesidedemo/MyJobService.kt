@@ -1,11 +1,8 @@
 package com.example.remotebindingservicesidedemo
 import android.app.job.JobParameters
 import android.app.job.JobService
-import android.content.Intent
 import android.os.*
 import android.util.Log
-import android.widget.Toast
-import androidx.annotation.RequiresApi
 import java.util.*
 
 class MyJobService : JobService() {
@@ -19,7 +16,8 @@ class MyJobService : JobService() {
 
     override fun onStartJob(p0: JobParameters?): Boolean {
         Log.d(TAG,"onStartJob")
-        startBgTask()
+        //startBgTask()
+        startBgTask2(p0)
         return true
     }
 
@@ -43,6 +41,11 @@ class MyJobService : JobService() {
             startRandomNumberGenerator()
         }.start()
     }
+    private fun startBgTask2(p0: JobParameters?) {
+        Thread {
+            generateLimitedRandomNumber(p0)
+        }.start()
+    }
 
     private fun startRandomNumberGenerator() {
         while (isRandomGenOn) {
@@ -56,6 +59,21 @@ class MyJobService : JobService() {
                 Log.i(TAG, "Thread Interrupted")
             }
         }
+    }
+
+    private fun generateLimitedRandomNumber(p0: JobParameters?) {
+        var count=0
+        while (count<50) {
+            try {
+                Thread.sleep(1000)
+                mRandomNumber = Random().nextInt(1000) + 11
+                Log.i(TAG, "Random Number: $mRandomNumber")
+            } catch (e: InterruptedException) {
+                Log.i(TAG, "Thread Interrupted")
+            }
+            count++
+        }
+        jobFinished(p0,true)
     }
 
     private fun stopRandomNumberGenerator() {
