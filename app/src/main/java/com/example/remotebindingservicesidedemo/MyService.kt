@@ -45,12 +45,11 @@ class MyService : Service() {
     }
 
     private var isRandomGenOn = false
-    private val randomNumberMessenger = lazy {
-        Messenger(RandomNumberRequestHandler())
-    }
+    private val randomNumberMessenger = Messenger(RandomNumberRequestHandler())
+
 
     override fun onBind(p0: Intent?): IBinder? {
-        return randomNumberMessenger.value.binder
+        return randomNumberMessenger.binder
     }
 
     override fun onRebind(intent: Intent?) {
@@ -97,7 +96,7 @@ class MyService : Service() {
             .setTicker("Ticker Text")
             .build()
 
-        startForeground(1, noti)
+        //startForeground(1, noti)
         return START_STICKY
     }
 
